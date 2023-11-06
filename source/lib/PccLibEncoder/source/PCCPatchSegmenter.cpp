@@ -844,6 +844,8 @@ void PCCPatchSegmenter3::segmentPatches( const PCCPointSet3&                 poi
       for ( size_t chunkIndex = 0; chunkIndex < numChunks; ++chunkIndex ) {
         std::cout << "\n\t Extracting connected components of chunk " << chunkIndex << "... ";
         std::vector<size_t> fifo;
+        //pointCountChunks[chunkIndex] = pointsChunks[chunkIndex].getPointCount();1维数组，每个chunk有多少个点，记录
+        //
         fifo.reserve( pointCountChunks[chunkIndex] );
         std::vector<bool> flags;
         flags.resize( pointCountChunks[chunkIndex], false );
