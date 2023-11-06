@@ -845,16 +845,25 @@ void PCCPatchSegmenter3::segmentPatches( const PCCPointSet3&                 poi
         std::cout << "\n\t Extracting connected components of chunk " << chunkIndex << "... ";
         std::vector<size_t> fifo;
         //pointCountChunks[chunkIndex] = pointsChunks[chunkIndex].getPointCount();1维数组，每个chunk有多少个点，记录
-        //
         fifo.reserve( pointCountChunks[chunkIndex] );
         std::vector<bool> flags;
         flags.resize( pointCountChunks[chunkIndex], false );
+        //rawPointsChunks,二维数组，std::vector<std::vector<size_t>> rawPointsChunks;
+        /*
+         for ( size_t i = 0; i < pointCountChunks[chunkIndex]; ++i ) {
+           rawPointsChunks[chunkIndex][i]         = i;
+           rawPointsDistanceChunks[chunkIndex][i] = ( std::numeric_limits<double>::max )();
+         }
+         rawPointsChunks,存放了一堆index，逐次递增的index
+        */
         for ( const auto i : rawPointsChunks[chunkIndex] ) { flags[i] = true; }
         connectedComponentsChunks[chunkIndex].reserve( 256 );
         for ( const auto i : rawPointsChunks[chunkIndex] ) {
+          //rawPointsDistanceChunks二维数组，存放了对应每一个chunk对应的点，对应的距离（这个距离的含义，尚且不清楚）
           if ( flags[i] && rawPointsDistanceChunks[chunkIndex][i] > maxAllowedDist2RawPointsDetection ) {
             flags[i]                  = false;
             const size_t indexCC      = connectedComponentsChunks[chunkIndex].size();
+            //partition数组，存放了所有点的cluster index信息
             const size_t clusterIndex = partition[pointsIndexChunks[chunkIndex][i]];
             connectedComponentsChunks[chunkIndex].resize( indexCC + 1 );
             std::vector<size_t>& connectedComponentChunk = connectedComponentsChunks[chunkIndex][indexCC];
