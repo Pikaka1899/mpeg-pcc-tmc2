@@ -864,6 +864,7 @@ void PCCPatchSegmenter3::segmentPatches( const PCCPointSet3&                 poi
             flags[i]                  = false;
             const size_t indexCC      = connectedComponentsChunks[chunkIndex].size();
             //partition数组，存放了所有点的cluster index信息
+            //pointsIndexChunks,点坐标，点index
             const size_t clusterIndex = partition[pointsIndexChunks[chunkIndex][i]];
             connectedComponentsChunks[chunkIndex].resize( indexCC + 1 );
             std::vector<size_t>& connectedComponentChunk = connectedComponentsChunks[chunkIndex][indexCC];
@@ -893,8 +894,10 @@ void PCCPatchSegmenter3::segmentPatches( const PCCPointSet3&                 poi
       std::cout << "\n\t merge connected components of all chunks... ";
       // convert connected component indexes of chunks to original indexes
       for ( int chunkIndex = 0; chunkIndex < numChunks; ++chunkIndex ) {
+        //std::vector<std::vector<std::vector<size_t>>> connectedComponentsChunks( numChunks );
         for ( auto& connectedComponent : connectedComponentsChunks[chunkIndex] ) {
           for ( size_t i = 0; i < connectedComponent.size(); ++i ) {
+            // std::vector<std::vector<size_t>>              pointsIndexChunks;
             connectedComponent[i] = pointsIndexChunks[chunkIndex][connectedComponent[i]];
           }
         }
